@@ -82,5 +82,6 @@ func main() {
 		peerIp := peer.Addrs[0].String()
 		fmt.Println(peerIp)
 	}
+	logger.Info("Done searching for peers!")
 
 }
