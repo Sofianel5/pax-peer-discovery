@@ -13,7 +13,7 @@ import (
 	"sync"
 )
 
-var logger = log.Logger("rendezvous")
+var logger = log.Logger("darkpool")
 
 func findPeers() {
 
@@ -21,7 +21,7 @@ func findPeers() {
 
 func main() {
 	log.SetAllLoggers(log.LevelWarn)
-	log.SetLogLevel("rendezvous", "info")
+	log.SetLogLevel("darkpool", "info")
 	logger.Info("Hello World, starting node...")
 	config, err := ParseFlags()
 	if err != nil {
@@ -44,6 +44,7 @@ func main() {
 		panic(err)
 	}
 	var wg sync.WaitGroup
+	logger.Info(config.BootstrapPeers)
 	for _, peerAddy := range config.BootstrapPeers {
 		peerInfo, _ := peer.AddrInfoFromP2pAddr(peerAddy)
 		if peerInfo != nil {
