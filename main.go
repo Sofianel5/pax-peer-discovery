@@ -67,11 +67,14 @@ func main() {
 	logger.Debug("Successfully announced!")
 
 	logger.Info("Searching for other peers...")
-	peers, err := routingDiscovery.FindPeers(ctx, config.RendezvousString)
+	peersChan, err := routingDiscovery.FindPeers(ctx, config.RendezvousString)
 	if err != nil {
+		logger.Error("Error finding peers: ", err)
 		panic(err)
+	} else {
+		logger.Info("Found peers!")
 	}
-	for peer := range peers {
+	for peer := range peersChan {
 		if peer.ID == host.ID() {
 			continue
 		}
