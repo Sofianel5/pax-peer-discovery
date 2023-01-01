@@ -30,7 +30,7 @@ func filterPeers(addrList []string) []string {
 	var member void
 	var publicIps = make(map[string]void)
 	for _, addr := range addrList {
-		if _, exists := publicIps[addr]; exists && checkIp(addr) {
+		if _, exists := publicIps[addr]; !exists && checkIp(addr) {
 			// check if addr in publicIps
 			publicIps[addr] = member
 		}
