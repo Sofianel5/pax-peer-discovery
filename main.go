@@ -20,17 +20,49 @@ func findPeers() {
 
 }
 
+func getMyIp() string {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		fmt.Println(err)
+		return ""
+	}
+	for _, address := range addrs {
+		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil {
+				return ipnet.IP.String()
+			}
+		}
+	}
+	return ""
+}
+
 func checkIp(ip string) bool {
-	ipAddress := net.ParseIP(ip)
-	return !ipAddress.IsPrivate()
+	IP := net.ParseIP(ip)
+	if IP.IsLoopback() || IP.IsLinkLocalMulticast() || IP.IsLinkLocalUnicast() {
+		return false
+	}
+	if ip4 := IP.To4(); ip4 != nil {
+		switch {
+		case ip4[0] == 10:
+			return false
+		case ip4[0] == 172 && ip4[1] >= 16 && ip4[1] <= 31:
+			return false
+		case ip4[0] == 192 && ip4[1] == 168:
+			return false
+		default:
+			return true
+		}
+	}
+	return false
 }
 
 func filterPeers(addrList []string) []string {
 	type void struct{}
 	var member void
 	var publicIps = make(map[string]void)
+	var myIp = getMyIp()
 	for _, addr := range addrList {
-		if _, exists := publicIps[addr]; !exists && checkIp(addr) {
+		if _, exists := publicIps[addr]; !exists && checkIp(addr) && addr != myIp {
 			// check if addr in publicIps
 			publicIps[addr] = member
 		}
