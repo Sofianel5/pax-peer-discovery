@@ -116,6 +116,7 @@ func main() {
 		}
 	}
 	logger.Info("Done searching for peers!")
-	logger.Info("Found peers:", foundPeers)
+	var filteredPeers = filterPeers(foundPeers)
+	logger.Info("Found public peers:", filteredPeers)
 
 }
