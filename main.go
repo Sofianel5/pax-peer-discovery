@@ -74,7 +74,7 @@ func main() {
 	} else {
 		logger.Info("Found peers!")
 	}
-	var foundPeers = make([]string, 0)
+	var foundPeers = make([][]string, 0)
 	for peer := range peersChan {
 		if peer.ID == host.ID() {
 			continue
@@ -84,9 +84,15 @@ func main() {
 			logger.Warning("No addresses found for peer:", peer)
 			continue
 		} else {
-			peerIp := peer.Addrs[0].String()
-			fmt.Println(peerIp)
-			foundPeers = append(foundPeers, peerIp)
+			peerIps := make([]string, 0)
+			for _, addr := range peer.Addrs {
+				val, err := addr.ValueForProtocol(multiaddr.P_IP4)
+				if err == nil {
+					peerIps = append(peerIps, val)
+				}
+			}
+			fmt.Println(peerIps)
+			foundPeers = append(foundPeers, peerIps)
 		}
 	}
 	logger.Info("Done searching for peers!")
