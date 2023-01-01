@@ -79,6 +79,10 @@ func main() {
 			continue
 		}
 		logger.Info("Found peer:", peer)
+		if len(peer.Addrs) == 0 {
+			logger.Warning("No addresses found for peer:", peer)
+			continue
+		}
 		peerIp := peer.Addrs[0].String()
 		fmt.Println(peerIp)
 	}
