@@ -10,6 +10,7 @@ import (
 	drouting "github.com/libp2p/go-libp2p/p2p/discovery/routing"
 	dutil "github.com/libp2p/go-libp2p/p2p/discovery/util"
 	"github.com/multiformats/go-multiaddr"
+	"net"
 	"sync"
 )
 
@@ -17,6 +18,25 @@ var logger = log.Logger("darkpool")
 
 func findPeers() {
 
+}
+
+func checkIp(ip string) bool {
+	ipAddress := net.ParseIP(ip)
+	return !ipAddress.IsPrivate()
+}
+
+func filterPeers(addrList []string) []net.IP {
+	var publicIps []net.IP
+	for _, addr := range addrList {
+		ip, _, err := net.SplitHostPort(addr)
+		if err != nil {
+			panic(err)
+		}
+		if checkIp(ip) {
+			publicIps = append(publicIps, net.ParseIP(ip))
+		}
+	}
+	return publicIps
 }
 
 func main() {
@@ -74,7 +94,7 @@ func main() {
 	} else {
 		logger.Info("Found peers!")
 	}
-	var foundPeers = make([][]string, 0)
+	var foundPeers = make([]string, 0)
 	for peer := range peersChan {
 		if peer.ID == host.ID() {
 			continue
@@ -92,7 +112,7 @@ func main() {
 				}
 			}
 			fmt.Println(peerIps)
-			foundPeers = append(foundPeers, peerIps)
+			foundPeers = append(foundPeers, peerIps...)
 		}
 	}
 	logger.Info("Done searching for peers!")
