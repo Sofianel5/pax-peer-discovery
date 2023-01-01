@@ -74,6 +74,7 @@ func main() {
 	} else {
 		logger.Info("Found peers!")
 	}
+	var foundPeers = make([]string, 0)
 	for peer := range peersChan {
 		if peer.ID == host.ID() {
 			continue
@@ -82,10 +83,13 @@ func main() {
 		if len(peer.Addrs) == 0 {
 			logger.Warning("No addresses found for peer:", peer)
 			continue
+		} else {
+			peerIp := peer.Addrs[0].String()
+			fmt.Println(peerIp)
+			foundPeers = append(foundPeers, peerIp)
 		}
-		peerIp := peer.Addrs[0].String()
-		fmt.Println(peerIp)
 	}
 	logger.Info("Done searching for peers!")
+	logger.Info("Found peers:", foundPeers)
 
 }
