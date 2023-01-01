@@ -25,14 +25,23 @@ func checkIp(ip string) bool {
 	return !ipAddress.IsPrivate()
 }
 
-func filterPeers(addrList []string) []net.IP {
-	var publicIps []net.IP
+func filterPeers(addrList []string) []string {
+	type void struct{}
+	var member void
+	var publicIps = make(map[string]void)
 	for _, addr := range addrList {
-		if checkIp(addr) {
-			publicIps = append(publicIps, net.ParseIP(addr))
+		if _, exists := publicIps[addr]; exists && checkIp(addr) {
+			// check if addr in publicIps
+			publicIps[addr] = member
 		}
 	}
-	return publicIps
+	keys := make([]string, len(publicIps))
+	i := 0
+	for k := range publicIps {
+		keys[i] = k
+		i++
+	}
+	return keys
 }
 
 func main() {
