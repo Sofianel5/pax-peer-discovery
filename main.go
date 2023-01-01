@@ -28,12 +28,8 @@ func checkIp(ip string) bool {
 func filterPeers(addrList []string) []net.IP {
 	var publicIps []net.IP
 	for _, addr := range addrList {
-		ip, _, err := net.SplitHostPort(addr)
-		if err != nil {
-			panic(err)
-		}
-		if checkIp(ip) {
-			publicIps = append(publicIps, net.ParseIP(ip))
+		if checkIp(addr) {
+			publicIps = append(publicIps, net.ParseIP(addr))
 		}
 	}
 	return publicIps
