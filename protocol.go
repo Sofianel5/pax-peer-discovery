@@ -4,7 +4,7 @@ import (
 	"net"
 )
 
-func checkPeerHello(string ip) bool {
+func checkPeerHello(ip string) bool {
 	// send TCP hello to peer
 
 	var conn net.Conn
@@ -14,4 +14,5 @@ func checkPeerHello(string ip) bool {
 		return false
 	}
 	defer conn.Close()
+	return true
 }

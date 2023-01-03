@@ -16,4 +16,5 @@ func main() {
 	}
 	var tryPeers = findPeers(config)
 	logger.Info("Found public peers:", tryPeers)
+	ipcSend("/try/10.0.0.1")
 }
