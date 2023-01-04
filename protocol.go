@@ -68,4 +68,5 @@ func sendPeers(conn net.Conn) {
 	// Send peers list to conn
 	logger.Info("Sending peers list to ", conn.RemoteAddr().String())
 	conn.Write([]byte(strings.Join(peers, ",")))
+	conn.Close()
 }
