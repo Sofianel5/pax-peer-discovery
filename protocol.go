@@ -44,20 +44,20 @@ func runServer() {
 	}
 }
 
-func getPeers(peer string) []string {
+func getPeers(peer string) (conneted bool, peers []string) {
 	// Retrieve and parse peers list from peer
 	conn, err := net.Dial("tcp", peer+CONN_PORT)
 	if err != nil {
-		panic(err)
+		return false, nil
 	}
 	defer conn.Close()
 	conn.Write([]byte("send_peers"))
 	var buf bytes.Buffer
 	_, err = io.Copy(&buf, conn)
 	if err != nil {
-		panic(err)
+		return false, nil
 	}
-	return strings.Split(buf.String(), ",")
+	return true, strings.Split(buf.String(), ",")
 }
 
 func sendPeers(conn net.Conn) {
