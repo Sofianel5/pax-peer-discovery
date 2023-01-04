@@ -18,7 +18,7 @@ func getMyIp() string {
 	if err != nil {
 		panic(err)
 	}
-	logger.Info("My IP is:%s\n", ip)
+	logger.Info("My IP is:%s\n", string(ip))
 	return string(ip)
 }
 
