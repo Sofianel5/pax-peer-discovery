@@ -9,4 +9,4 @@ rm -rf /usr/local/go && tar -C /usr/local -xzf go1.19.4.linux-amd64.tar.gz
 rm go1.19.4.linux-amd64.tar.gz
 # Add to path
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile
-source ~/.profile
+. ~/.profile
