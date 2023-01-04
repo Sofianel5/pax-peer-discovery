@@ -50,6 +50,8 @@ func getPeers(peer string) (conneted bool, peers []string) {
 	if err != nil {
 		logger.Warn("Could not connect to peer ", peer, ": ", err)
 		return false, nil
+	} else {
+		logger.Info("Connected to peer at ", conn.RemoteAddr().String())
 	}
 	defer conn.Close()
 	conn.Write([]byte("send_peers"))
