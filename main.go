@@ -17,7 +17,12 @@ func main() {
 	var tryPeers = findPeers(config)
 	logger.Info("Found public peers:", tryPeers)
 	// ipcSend("/try/10.0.0.1")
-	// go runServer()
-	// resp := getPeers(config.TrustedPeer)
-	// logger.Info("Received peers:", resp)
+	go runServer()
+	for _, peer := range tryPeers {
+		// go getPeers(peer)
+		go func(_peer string) {
+			resp := getPeers(_peer)
+			logger.Info("Received peers:", resp)
+		}(peer)
+	}
 }
