@@ -44,6 +44,7 @@ type Config struct {
 	BootstrapPeers   addrList
 	ListenAddresses  addrList
 	ProtocolID       string
+	TrustedPeer      string
 }
 
 func ParseFlags() (Config, error) {
@@ -53,6 +54,7 @@ func ParseFlags() (Config, error) {
 	flag.Var(&config.BootstrapPeers, "peer", "Adds a peer multiaddress to the bootstrap list")
 	flag.Var(&config.ListenAddresses, "listen", "Adds a multiaddress to the listen list")
 	flag.StringVar(&config.ProtocolID, "pid", "/dpool/0.0.1", "Sets a protocol id for stream headers")
+	flag.StringVar(&config.TrustedPeer, "trustPeer", "54.215.185.161", "Sets a trusted peer to connect to")
 	flag.Parse()
 
 	if len(config.BootstrapPeers) == 0 {

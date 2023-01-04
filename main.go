@@ -14,7 +14,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	var tryPeers = findPeers(config)
-	logger.Info("Found public peers:", tryPeers)
-	ipcSend("/try/10.0.0.1")
+	// var tryPeers = findPeers(config)
+	// logger.Info("Found public peers:", tryPeers)
+	// ipcSend("/try/10.0.0.1")
+	go runServer()
+	resp := getPeers(config.TrustedPeer)
+	logger.Info("Received peers:", resp)
 }
