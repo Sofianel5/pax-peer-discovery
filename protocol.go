@@ -8,7 +8,7 @@ import (
 )
 
 const MAX_PEERS = 10
-const CONN_PORT = ":69420"
+const CONN_PORT = ":42069"
 
 var peers = make([]string, MAX_PEERS)
 
