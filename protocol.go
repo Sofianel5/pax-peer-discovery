@@ -10,7 +10,7 @@ import (
 const MAX_PEERS = 10
 const CONN_PORT = ":42069"
 
-var peers = make([]string, MAX_PEERS)
+var peers = []string{"bruh", "bruh2"}
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()
@@ -48,6 +48,7 @@ func getPeers(peer string) (conneted bool, peers []string) {
 	// Retrieve and parse peers list from peer
 	conn, err := net.Dial("tcp", peer+CONN_PORT)
 	if err != nil {
+		logger.Warn("Could not connect to peer ", peer, ": ", err)
 		return false, nil
 	}
 	defer conn.Close()
@@ -55,6 +56,7 @@ func getPeers(peer string) (conneted bool, peers []string) {
 	var buf bytes.Buffer
 	_, err = io.Copy(&buf, conn)
 	if err != nil {
+		logger.Warn("Could not read from peer ", peer, ": ", err)
 		return false, nil
 	}
 	return true, strings.Split(buf.String(), ",")
