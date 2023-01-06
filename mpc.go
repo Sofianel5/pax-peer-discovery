@@ -20,7 +20,7 @@ func run2pc(app, input, counterparty string, player int) (err error) {
 		return
 	}
 	// Run MPC
-	cmd := exec.Command(fmt.Sprintf("//mascot-party.x -N 2 -h %s %d %s", counterparty, player, app))
+	cmd := exec.Command(fmt.Sprintf("./mascot-party.x -N 2 -h %s %d %s", counterparty, player, app))
 	cmd.Dir = MPC_DIR
 	out, err := cmd.CombinedOutput()
 	logger.Info("MPC Protocol Complete")
