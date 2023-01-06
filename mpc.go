@@ -9,7 +9,7 @@ import (
 
 const MPC_DIR = "./workspace/mp-spdz"
 
-func run2pc(app, input, myaddr, counterparty, player string) (err error) {
+func run2pc(app, input, myaddr, counterparty, player string) (output string, err error) {
 	// Write input to file in Player-Data/Input-P<party>-0
 	f, err := os.OpenFile(fmt.Sprintf("%s/Player-Data/Input-P%s-0", MPC_DIR, player), os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
@@ -34,18 +34,18 @@ func run2pc(app, input, myaddr, counterparty, player string) (err error) {
 	if err != nil {
 		logger.Error(err)
 	}
-	output, err := os.ReadFile(MPC_DIR + "/Output-P" + player + "-0")
+	bytes_output, err := os.ReadFile(MPC_DIR + "/Output-P" + player + "-0")
 	if err != nil {
 		logger.Error(err)
 		return
 	}
-	formatOut := strings.TrimSpace(string(output))
-	if formatOut == "0" {
+	output = strings.TrimSpace(string(bytes_output))
+	if output == "0" {
 		logger.Info("No match found. Find another counterparty.")
-	} else if formatOut == "1" {
+	} else if output == "1" {
 		logger.Info("Match found! Execute trade with counterparty.")
 	} else {
 		logger.Error("Unexpected output: ", string(output))
 	}
-	return nil
+	return
 }

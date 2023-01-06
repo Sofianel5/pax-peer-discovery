@@ -10,6 +10,7 @@ var logger = log.Logger("darkpool")
 func main() {
 	log.SetAllLoggers(log.LevelWarn)
 	log.SetLogLevel("darkpool", "info")
+	log.SetLogLevel("net/identify", "error")
 	logger.Info("Hello World, starting node...")
 	config, err := ParseFlags()
 	if err != nil {
