@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 const MPC_DIR = "./workspace/mp-spdz"
@@ -38,10 +39,11 @@ func run2pc(app, input, myaddr, counterparty, player string) (err error) {
 		logger.Error(err)
 		return
 	}
-	if string(output) == "0" {
-		logger.Info("No match found")
-	} else if string(output) == "1" {
-		logger.Info("Match found")
+	formatOut := strings.TrimSpace(string(output))
+	if formatOut == "0" {
+		logger.Info("No match found. Find another counterparty.")
+	} else if formatOut == "1" {
+		logger.Info("Match found! Execute trade with counterparty.")
 	} else {
 		logger.Error("Unexpected output: ", string(output))
 	}
