@@ -27,6 +27,12 @@ func main() {
 			success, resp := getPeers(_peer)
 			if success {
 				logger.Info("Received peers:", resp)
+				logger.Info("Now attempting to run MPC protocol with peer ", _peer)
+				if _peer[:2] == "54" {
+					run2pc("dark_pool_inputs", "611382286831621467233887798921843936019654057231 917551056842671309452305380979543736893630245704", _peer, 0)
+				} else {
+					run2pc("dark_pool_inputs", "917551056842671309452305380979543736893630245704 611382286831621467233887798921843936019654057231", _peer, 1)
+				}
 			} else {
 				logger.Warn("Could not connect to ", _peer)
 			}
