@@ -8,9 +8,9 @@ import (
 
 const MPC_DIR = "./workspace/mp-spdz"
 
-func run2pc(app, input, myaddr, counterparty string, player int) (err error) {
+func run2pc(app, input, myaddr, counterparty, player string) (err error) {
 	// Write input to file in Player-Data/Input-P<party>-0
-	f, err := os.OpenFile(fmt.Sprintf("%s/Player-Data/Input-P%d-0", MPC_DIR, player), os.O_WRONLY|os.O_CREATE, 0644)
+	f, err := os.OpenFile(fmt.Sprintf("%s/Player-Data/Input-P%s-0", MPC_DIR, player), os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		return
 	}
@@ -21,12 +21,10 @@ func run2pc(app, input, myaddr, counterparty string, player int) (err error) {
 	}
 	// Run MPC
 	var cmd *exec.Cmd
-	if player == 0 {
-		cmd = exec.Command("ls")
-		// cmd = exec.Command(fmt.Sprintf("./mascot-party.x -N 2 -h %s -p %d %s", myaddr, player, app))
+	if player == "0" {
+		cmd = exec.Command("./mascot-party.x", "-N", "2", "-h", myaddr, "-p", player, app)
 	} else {
-		cmd = exec.Command("ls")
-		// cmd = exec.Command(fmt.Sprintf("./mascot-party.x -N 2 -h %s -p %d %s", counterparty, player, app))
+		cmd = exec.Command("./mascot-party.x", "-N", "2", "-h", counterparty, "-p", player, app)
 	}
 	cmd.Dir = MPC_DIR
 	out, err := cmd.CombinedOutput()
