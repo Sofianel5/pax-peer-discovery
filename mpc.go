@@ -21,10 +21,11 @@ func run2pc(app, input, myaddr, counterparty, player string) (err error) {
 	}
 	// Run MPC
 	var cmd *exec.Cmd
+	output_file := fmt.Sprintf("Player-Data/Output-P%s-0", player)
 	if player == "0" {
-		cmd = exec.Command("./mascot-party.x", "-N", "2", "-h", myaddr, "-p", player, app)
+		cmd = exec.Command("./mascot-party.x", "-N", "2", "-h", myaddr, "-p", player, "-OF", output_file, app)
 	} else {
-		cmd = exec.Command("./mascot-party.x", "-N", "2", "-h", counterparty, "-p", player, app)
+		cmd = exec.Command("./mascot-party.x", "-N", "2", "-h", counterparty, "-p", player, "-OF", output_file, app)
 	}
 	cmd.Dir = MPC_DIR
 	out, err := cmd.CombinedOutput()
@@ -33,5 +34,10 @@ func run2pc(app, input, myaddr, counterparty, player string) (err error) {
 	if err != nil {
 		logger.Error(err)
 	}
+	output, err := os.ReadFile(MPC_DIR + "/" + output_file)
+	if err != nil {
+		return
+	}
+	logger.Info("Output:", string(output))
 	return nil
 }
