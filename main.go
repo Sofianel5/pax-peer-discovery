@@ -16,7 +16,8 @@ func main() {
 		panic(err)
 	}
 	go runServer()
-	var tryPeers = findPeers(config)
+	myaddr := getMyIp()
+	var tryPeers = findPeers(config, myaddr)
 	logger.Info("Found public peers:", tryPeers)
 	// ipcSend("/try/10.0.0.1")
 	var wg sync.WaitGroup
@@ -29,9 +30,9 @@ func main() {
 				logger.Info("Received peers:", resp)
 				logger.Info("Now attempting to run MPC protocol with peer ", _peer)
 				if _peer[:2] == "54" {
-					run2pc("dark_pool_inputs", "611382286831621467233887798921843936019654057231 917551056842671309452305380979543736893630245704", _peer, 0)
+					run2pc("dark_pool_inputs", "611382286831621467233887798921843936019654057231 917551056842671309452305380979543736893630245704", myaddr, _peer, 0)
 				} else {
-					run2pc("dark_pool_inputs", "917551056842671309452305380979543736893630245704 611382286831621467233887798921843936019654057231", _peer, 1)
+					run2pc("dark_pool_inputs", "917551056842671309452305380979543736893630245704 611382286831621467233887798921843936019654057231", myaddr, _peer, 1)
 				}
 			} else {
 				logger.Warn("Could not connect to ", _peer)

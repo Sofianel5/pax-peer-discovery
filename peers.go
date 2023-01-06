@@ -11,11 +11,11 @@ import (
 	"sync"
 )
 
-func filterPeers(addrList []string) []string {
+func filterPeers(addrList []string, myIp string) []string {
 	type void struct{}
 	var member void
 	var publicIps = make(map[string]void)
-	var myIp = getMyIp()
+	// var myIp = getMyIp()
 	for _, addr := range addrList {
 		if _, exists := publicIps[addr]; !exists && checkIp(addr) && addr != myIp {
 			// check if addr in publicIps
@@ -31,7 +31,7 @@ func filterPeers(addrList []string) []string {
 	return keys
 }
 
-func findPeers(config Config) []string {
+func findPeers(config Config, myIp string) []string {
 	host, err := libp2p.New(libp2p.ListenAddrs([]multiaddr.Multiaddr(config.ListenAddresses)...))
 	if err != nil {
 		panic(err)
@@ -100,6 +100,6 @@ func findPeers(config Config) []string {
 		}
 	}
 	logger.Info("Done searching for peers!")
-	var filteredPeers = filterPeers(foundPeers)
+	var filteredPeers = filterPeers(foundPeers, myIp)
 	return filteredPeers
 }
