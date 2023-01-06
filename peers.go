@@ -84,9 +84,9 @@ func findPeers(config Config, myIp string) []string {
 		if peer.ID == host.ID() {
 			continue
 		}
-		logger.Info("Found peer:", peer)
+		// logger.Info("Found peer:", peer)
 		if len(peer.Addrs) == 0 {
-			logger.Warning("No addresses found for peer:", peer)
+			// logger.Warning("No addresses found for peer:", peer)
 			continue
 		} else {
 			peerIps := make([]string, 0)
