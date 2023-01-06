@@ -28,9 +28,9 @@ func run2pc(app, input, myaddr, counterparty, player string) (output string, err
 		cmd = exec.Command("./mascot-party.x", "-N", "2", "-h", counterparty, "-p", player, "-OF", "Output", app)
 	}
 	cmd.Dir = MPC_DIR
-	out, err := cmd.CombinedOutput()
+	_, err = cmd.CombinedOutput()
 	logger.Info("MPC Protocol Complete")
-	logger.Info(string(out))
+	// logger.Info(string(out))
 	if err != nil {
 		logger.Error(err)
 	}

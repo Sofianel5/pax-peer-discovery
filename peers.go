@@ -59,7 +59,7 @@ func findPeers(config Config, myIp string) []string {
 				if err := host.Connect(ctx, *peerInfo); err != nil {
 					logger.Warning(err)
 				} else {
-					logger.Info("Connection established with bootstrap node:", *peerInfo)
+					// logger.Info("Connection established with bootstrap node:", *peerInfo)
 				}
 			}()
 		}
