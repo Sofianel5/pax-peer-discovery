@@ -38,6 +38,12 @@ func run2pc(app, input, myaddr, counterparty, player string) (err error) {
 		logger.Error(err)
 		return
 	}
-	logger.Info("Output:", string(output))
+	if string(output) == "0" {
+		logger.Info("No match found")
+	} else if string(output) == "1" {
+		logger.Info("Match found")
+	} else {
+		logger.Error("Unexpected output: ", string(output))
+	}
 	return nil
 }
