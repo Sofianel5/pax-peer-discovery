@@ -22,9 +22,11 @@ func run2pc(app, input, myaddr, counterparty string, player int) (err error) {
 	// Run MPC
 	var cmd *exec.Cmd
 	if player == 0 {
-		cmd = exec.Command(fmt.Sprintf("./mascot-party.x -N 2 -h %s -p %d %s", myaddr, player, app))
+		cmd = exec.Command("ls")
+		// cmd = exec.Command(fmt.Sprintf("./mascot-party.x -N 2 -h %s -p %d %s", myaddr, player, app))
 	} else {
-		cmd = exec.Command(fmt.Sprintf("./mascot-party.x -N 2 -h %s -p %d %s", counterparty, player, app))
+		cmd = exec.Command("ls")
+		// cmd = exec.Command(fmt.Sprintf("./mascot-party.x -N 2 -h %s -p %d %s", counterparty, player, app))
 	}
 	cmd.Dir = MPC_DIR
 	out, err := cmd.CombinedOutput()
