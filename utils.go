@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"math/big"
 	"net"
 	"net/http"
 )
@@ -40,4 +41,10 @@ func checkIp(ip string) bool {
 		}
 	}
 	return false
+}
+
+func parseHexAddr(input string) string {
+	i := new(big.Int)
+	i.SetString(input[2:], 16)
+	return i.String()
 }
