@@ -17,8 +17,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	go runServer()
 	myaddr := getMyIp()
+	go runServer(&config, myaddr)
 	var tryPeers = findPeers(config, myaddr)
 	logger.Info("Found public peers:", tryPeers)
 	// ipcSend("/try/10.0.0.1")
