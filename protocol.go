@@ -46,18 +46,17 @@ func runServer(config *Config, myaddr string) {
 	}
 }
 
-func runDarkpool(peer, buyAddr, sellAddr, myaddr string) (connected bool) {
+func runDarkpool(peer, buyAddr, sellAddr, myaddr string) (output string, success error) {
 	conn, err := net.Dial("tcp", peer+CONN_PORT)
 	if err != nil {
 		logger.Warn("Could not connect to peer ", peer, ": ", err)
-		return false
+		return "", err
 	} else {
 		logger.Info("Connected to peer at ", conn.RemoteAddr().String())
 	}
 	defer conn.Close()
 	conn.Write([]byte("run_darkpool"))
-	run2pc("dark_pool_inputs", parseHexAddr(buyAddr)+" "+parseHexAddr(sellAddr), myaddr, peer, "0")
-	return true
+	return run2pc("dark_pool_inputs", parseHexAddr(buyAddr)+" "+parseHexAddr(sellAddr), myaddr, peer, "0")
 }
 
 func getPeers(peer string) (conneted bool, peers []string) {

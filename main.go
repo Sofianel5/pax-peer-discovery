@@ -27,17 +27,11 @@ func main() {
 	for _, peer := range tryPeers {
 		wg.Add(1)
 		go func(_peer string) {
-			success, resp := getPeers(_peer)
-			if success {
-				logger.Info("Received peers:", resp)
-				logger.Info("Now attempting to run MPC protocol with peer ", _peer)
-				if _peer[:2] == "54" {
-					run2pc("dark_pool_inputs", "611382286831621467233887798921843936019654057231 917551056842671309452305380979543736893630245704", myaddr, _peer, "0")
-				} else {
-					run2pc("dark_pool_inputs", "917551056842671309452305380979543736893630245704 611382286831621467233887798921843936019654057231", myaddr, _peer, "1")
-				}
+			output, err := runDarkpool(_peer, parseHexAddr(config.BuyAsset), parseHexAddr(config.SellAsset), myaddr)
+			if err != nil {
+				logger.Warn("Could not run darkpool on peer ", _peer, ": ", err)
 			} else {
-				logger.Warn("Could not connect to ", _peer)
+				logger.Info("Darkpool output: ", output)
 			}
 			wg.Done()
 		}(peer)
