@@ -10,7 +10,7 @@ import (
 const MAX_PEERS = 10
 const CONN_PORT = ":42069"
 
-var peers = []string{"bruh", "bruh2"}
+var peers = []string{}
 
 func handleConnection(conn net.Conn) {
 	defer conn.Close()

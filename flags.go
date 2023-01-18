@@ -45,6 +45,8 @@ type Config struct {
 	ListenAddresses  addrList
 	ProtocolID       string
 	TrustedPeer      string
+	BuyAsset         string
+	SellAsset        string
 }
 
 func ParseFlags() (Config, error) {
@@ -55,6 +57,8 @@ func ParseFlags() (Config, error) {
 	flag.Var(&config.ListenAddresses, "listen", "Adds a multiaddress to the listen list")
 	flag.StringVar(&config.ProtocolID, "pid", "/dpool/0.0.1", "Sets a protocol id for stream headers")
 	flag.StringVar(&config.TrustedPeer, "trustPeer", "54.215.185.161", "Sets a trusted peer to connect to")
+	flag.StringVar(&config.BuyAsset, "buyAsset", "0x6b175474e89094c44da98b954eedeac495271d0f", "Sets the buy asset")
+	flag.StringVar(&config.SellAsset, "sellAsset", "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", "Sets the sell asset")
 	flag.Parse()
 
 	if len(config.BootstrapPeers) == 0 {

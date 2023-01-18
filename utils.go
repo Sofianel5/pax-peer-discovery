@@ -8,7 +8,7 @@ import (
 
 func getMyIp() string {
 	url := "https://api.ipify.org?format=text"
-	logger.Info("Getting IP address from  ipify\n")
+	// logger.Info("Getting IP address from  ipify\n")
 	resp, err := http.Get(url)
 	if err != nil {
 		panic(err)
@@ -18,7 +18,7 @@ func getMyIp() string {
 	if err != nil {
 		panic(err)
 	}
-	logger.Info("My IP is: ", string(ip))
+	// logger.Info("My IP is: ", string(ip))
 	return string(ip)
 }
 
