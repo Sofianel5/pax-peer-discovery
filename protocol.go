@@ -12,7 +12,7 @@ const CONN_PORT = ":42069"
 
 var peers = []string{}
 
-func handleConnection(conn net.Conn, config *Config) {
+func handleConnection(conn net.Conn, config *Config, myaddr string) {
 	defer conn.Close()
 	buf := make([]byte, 1024)
 	for {
@@ -25,7 +25,7 @@ func handleConnection(conn net.Conn, config *Config) {
 			// Send peers
 			sendPeers(conn)
 		} else if string(buf[:n]) == "run_darkpool" {
-			run2pc("dark_pool_inputs", parseHexAddr(config.BuyAsset) + " " + parseHexAddr(config.SellAsset), myaddr, conn.RemoteAddr().String(), "1")
+			run2pc("dark_pool_inputs", parseHexAddr(config.BuyAsset)+" "+parseHexAddr(config.SellAsset), myaddr, conn.RemoteAddr().String(), "1")
 		}
 	}
 }
@@ -46,7 +46,7 @@ func runServer(config *Config, myaddr string) {
 	}
 }
 
-func runDarkpool(peer, buyAddr, sellAddr string) (connected bool) {
+func runDarkpool(peer, buyAddr, sellAddr, myaddr string) (connected bool) {
 	conn, err := net.Dial("tcp", peer+CONN_PORT)
 	if err != nil {
 		logger.Warn("Could not connect to peer ", peer, ": ", err)
@@ -56,6 +56,9 @@ func runDarkpool(peer, buyAddr, sellAddr string) (connected bool) {
 	}
 	defer conn.Close()
 	conn.Write([]byte("run_darkpool"))
+	run2pc("dark_pool_inputs", parseHexAddr(buyAddr)+" "+parseHexAddr(sellAddr), myaddr, peer, "0")
+	return true
+}
 
 func getPeers(peer string) (conneted bool, peers []string) {
 	// Retrieve and parse peers list from peer
