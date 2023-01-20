@@ -101,5 +101,9 @@ func findPeers(config Config, myIp string) []string {
 	}
 	logger.Info("Done searching for peers!")
 	var filteredPeers = filterPeers(foundPeers, myIp)
+	// Try again if no peers found
+	if len(filteredPeers) == 0 {
+		return findPeers(config, myIp)
+	}
 	return filteredPeers
 }
