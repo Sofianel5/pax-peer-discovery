@@ -37,7 +37,7 @@ func handleConnection(conn net.Conn, config *Config, myaddr string) {
 		} else if string(buf[:n]) == "run_darkpool" {
 			if !runningMpc {
 				lockDarkpool()
-				run2pc("dark_pool_inputs", parseHexAddr(config.BuyAsset)+" "+parseHexAddr(config.SellAsset), myaddr, conn.RemoteAddr().String(), "1")
+				run2pc("dark_pool_inputs", parseHexAddr(config.BuyAsset)+" "+parseHexAddr(config.SellAsset), myaddr, conn.RemoteAddr().(*net.TCPAddr).IP.String(), "1")
 				unlockDarkpool()
 			} else {
 				logger.Warn("Cannot run darkpool, MPC is already running")
