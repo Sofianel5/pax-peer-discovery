@@ -10,7 +10,7 @@ import (
 const MPC_DIR = "./workspace/mp-spdz"
 
 func run2pc(app, input, myaddr, counterparty, player string) (output string, err error) {
-	logger.Info("Running protocol as player", player, "with input", input)
+	logger.Info("Running protocol as player ", player, " with input: ", input)
 	// Write input to file in Player-Data/Input-P<party>-0
 	f, err := os.OpenFile(fmt.Sprintf("%s/Player-Data/Input-P%s-0", MPC_DIR, player), os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
@@ -29,9 +29,9 @@ func run2pc(app, input, myaddr, counterparty, player string) (output string, err
 		cmd = exec.Command("./mascot-party.x", "-N", "2", "-h", counterparty, "-p", player, "-OF", "Output", app)
 	}
 	cmd.Dir = MPC_DIR
-	_, err = cmd.CombinedOutput()
+	out, err := cmd.CombinedOutput()
 	logger.Info("MPC Protocol Complete")
-	// logger.Info(string(out))
+	logger.Info(string(out))
 	if err != nil {
 		logger.Error(err)
 	}
