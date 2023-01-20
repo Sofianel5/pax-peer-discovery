@@ -45,6 +45,6 @@ func checkIp(ip string) bool {
 
 func parseHexAddr(input string) string {
 	i := new(big.Int)
-	i.SetString(input[2:], 16)
+	i.SetString(input, 0)
 	return i.String()
 }
