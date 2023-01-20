@@ -28,7 +28,9 @@ func handleConnection(conn net.Conn, config *Config, myaddr string) {
 			sendPeers(conn)
 		} else if string(buf[:n]) == "run_darkpool" {
 			if !runningMpc {
+				runningMpc = true
 				run2pc("dark_pool_inputs", parseHexAddr(config.BuyAsset)+" "+parseHexAddr(config.SellAsset), myaddr, conn.RemoteAddr().String(), "1")
+				runningMpc = false
 			} else {
 				logger.Warn("Cannot run darkpool, MPC is already running")
 			}
@@ -66,7 +68,9 @@ func runDarkpool(peer, buyAddr, sellAddr, myaddr string) (output string, success
 	}
 	defer conn.Close()
 	conn.Write([]byte("run_darkpool"))
+	runningMpc = true
 	return run2pc("dark_pool_inputs", parseHexAddr(buyAddr)+" "+parseHexAddr(sellAddr), myaddr, peer, "0")
+	runningMpc = false
 }
 
 func getPeers(peer string) (conneted bool, peers []string) {
