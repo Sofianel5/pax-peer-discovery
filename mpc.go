@@ -34,6 +34,7 @@ func run2pc(app, input, myaddr, counterparty, player string) (output string, err
 	logger.Info(string(out))
 	if err != nil {
 		logger.Error(err)
+		return
 	}
 	bytes_output, err := os.ReadFile(MPC_DIR + "/Output-P" + player + "-0")
 	if err != nil {

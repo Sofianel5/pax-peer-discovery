@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"io"
 	"net"
 	"strings"
@@ -11,6 +12,7 @@ const MAX_PEERS = 10
 const CONN_PORT = ":42069"
 
 var peers = []string{}
+var runningMpc = false
 
 func handleConnection(conn net.Conn, config *Config, myaddr string) {
 	defer conn.Close()
@@ -25,7 +27,11 @@ func handleConnection(conn net.Conn, config *Config, myaddr string) {
 			// Send peers
 			sendPeers(conn)
 		} else if string(buf[:n]) == "run_darkpool" {
-			run2pc("dark_pool_inputs", parseHexAddr(config.BuyAsset)+" "+parseHexAddr(config.SellAsset), myaddr, conn.RemoteAddr().String(), "1")
+			if !runningMpc {
+				run2pc("dark_pool_inputs", parseHexAddr(config.BuyAsset)+" "+parseHexAddr(config.SellAsset), myaddr, conn.RemoteAddr().String(), "1")
+			} else {
+				logger.Warn("Cannot run darkpool, MPC is already running")
+			}
 		}
 	}
 }
@@ -47,6 +53,10 @@ func runServer(config *Config, myaddr string) {
 }
 
 func runDarkpool(peer, buyAddr, sellAddr, myaddr string) (output string, success error) {
+	if runningMpc {
+		logger.Warn("Cannot run darkpool, MPC is already running")
+		return "", errors.New("Cannot run darkpool, MPC is already running")
+	}
 	conn, err := net.Dial("tcp", peer+CONN_PORT)
 	if err != nil {
 		logger.Warn("Could not connect to peer ", peer, ": ", err)
